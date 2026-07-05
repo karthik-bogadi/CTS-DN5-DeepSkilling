@@ -2,6 +2,8 @@ package org.karthik.springdatajpa.controller;
 import org.karthik.springdatajpa.model.Student;
 import org.karthik.springdatajpa.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +15,7 @@ public class StudentController {
     public StudentService studentService;
     @GetMapping("/students")
     public List<Student> getAllStudents(){
+
         return studentService.findAll();
     }
     @PostMapping("/students")
@@ -21,8 +24,9 @@ public class StudentController {
         return "Added successfully";
     }
     @GetMapping("/students/{id}")
-    public Optional<Student> getStudentById(@PathVariable int id){
-        return studentService.findById(id);
+    public ResponseEntity<Student> getStudentById(@PathVariable int id){
+
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.findById(id));
     }
 
     @PutMapping("/students")

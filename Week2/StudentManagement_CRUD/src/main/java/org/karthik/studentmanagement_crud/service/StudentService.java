@@ -17,9 +17,11 @@ public class StudentService {
     }
 
     public void addStudent(Student student){
+
         studentRepository.save(student);
     }
     public void delete(int id){
+
         studentRepository.delete(id);
     }
 
