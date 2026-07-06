@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="countryList" class="com.cognizant.springlearn.model.CountryList">
+        <property name="countryList">
+            <list>
+                <bean class="com.cognizant.springlearn.model.Country">
+                    <property name="code" value="IN"/>
+                    <property name="name" value="India"/>
+                </bean>
+
+                <bean class="com.cognizant.springlearn.model.Country">
+                    <property name="code" value="US"/>
+                    <property name="name" value="United States"/>
+                </bean>
+
+                <bean class="com.cognizant.springlearn.model.Country">
+                    <property name="code" value="UK"/>
+                    <property name="name" value="United Kingdom"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+</beans>
