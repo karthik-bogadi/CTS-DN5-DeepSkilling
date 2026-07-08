@@ -17,7 +17,7 @@ public class StudentController {
     @GetMapping("/students/{id}/details")
     public Department getStudent(@PathVariable int id){
         Student student=new Student(id,"karthik",1);
-        Department department=restTemplate.getForObject("http://localhost:8082/department/"
+        Department department=restTemplate.getForObject("http://DEPARTMENT-SERVICE/department/"
                         + student.getDepartmentId(),
                 Department.class);
         return department;
