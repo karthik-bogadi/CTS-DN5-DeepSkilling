@@ -2,6 +2,7 @@ package org.karthik.studentservice.controller;
 
 import org.karthik.studentservice.model.Department;
 import org.karthik.studentservice.model.Student;
+import org.karthik.studentservice.model.StudentDetailsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,17 @@ public class StudentController {
     private RestTemplate restTemplate;
 
     @GetMapping("/students/{id}/details")
-    public Department getStudent(@PathVariable int id){
+    public StudentDetailsResponse getStudent(@PathVariable int id){
         Student student=new Student(id,"karthik",1);
         Department department=restTemplate.getForObject("http://DEPARTMENT-SERVICE/department/"
                         + student.getDepartmentId(),
                 Department.class);
-        return department;
+
+
+        return new StudentDetailsResponse(
+                student.getId(),
+                student.getName(),
+                department
+        );
     }
 }
