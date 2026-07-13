@@ -10,6 +10,7 @@ public class TestingApp {
     }
 
     public boolean checkEligibility(int age){
+
         return age>18;
     }
 
@@ -17,7 +18,7 @@ public class TestingApp {
         if(id==20){
             return new Student(20,"karthik");
         }
-        return null;
+        throw new RuntimeException("Student Not Found");
     }
 
      public int divide(int a, int b){

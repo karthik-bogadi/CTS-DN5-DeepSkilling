@@ -553,3 +553,163 @@ Improves readability and maintainability.
 
 This handbook covers the complete JUnit fundamentals required for
 freshers, CTS DN 5.0, and Java Spring Boot backend interviews.
+
+---
+
+# Why is `@BeforeAll` Static?
+
+### Question
+
+**Why must `@BeforeAll` methods be `static`?**
+
+### Answer
+
+JUnit creates a **new object (test instance)** for every test method. However, `@BeforeAll` executes **before any test object is created**. Since no object exists at that time, JUnit cannot call a non-static method. Therefore, `@BeforeAll` must be `static` so it can be called using the class name.
+
+---
+
+## Step 1 – JUnit Starts
+
+JUnit scans the test class and looks for lifecycle methods.
+
+```text
+JUnit Starts
+
+↓
+
+StudentServiceTest.class
+```
+
+At this point:
+
+* ❌ No object is created yet.
+* ✅ Only the class is loaded.
+
+---
+
+## Step 2 – Execute `@BeforeAll`
+
+Since no object exists, JUnit cannot do:
+
+```java
+obj.init();   // obj doesn't exist
+```
+
+Instead, it calls:
+
+```java
+StudentServiceTest.init();
+```
+
+Only **static methods** can be called using the class name.
+
+Therefore:
+
+```java
+@BeforeAll
+static void init() {
+
+}
+```
+
+---
+
+## Step 3 – Create Test Objects
+
+After `@BeforeAll` completes, JUnit creates a **new object for each test**.
+
+```text
+new StudentServiceTest()
+
+↓
+
+@BeforeEach
+
+↓
+
+@Test
+
+↓
+
+@AfterEach
+```
+
+For the next test:
+
+```text
+new StudentServiceTest()
+
+↓
+
+@BeforeEach
+
+↓
+
+@Test
+
+↓
+
+@AfterEach
+```
+
+Each test gets a fresh object.
+
+---
+
+## Step 4 – Execute `@AfterAll`
+
+After all test methods finish, JUnit executes:
+
+```java
+@AfterAll
+static void cleanup() {
+
+}
+```
+
+Like `@BeforeAll`, it is also `static` because it runs at the class level after all test instances have completed.
+
+---
+
+## Complete Execution Flow
+
+```text
+JUnit Starts
+        │
+        ▼
+@BeforeAll (Runs Once)
+        │
+        ▼
+Create Test Object #1
+        │
+        ▼
+@BeforeEach
+        │
+        ▼
+@Test
+        │
+        ▼
+@AfterEach
+        │
+        ▼
+Create Test Object #2
+        │
+        ▼
+@BeforeEach
+        │
+        ▼
+@Test
+        │
+        ▼
+@AfterEach
+        │
+        ▼
+@AfterAll (Runs Once)
+```
+
+### Key Points
+
+* `@BeforeAll` runs **once before all tests**.
+* At that time, **no test object exists**.
+* Therefore, JUnit calls it using the **class name**, so it **must be `static`**.
+* `@BeforeEach` runs **after** a test object is created, so it **does not need to be `static`**.
